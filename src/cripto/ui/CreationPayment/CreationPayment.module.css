@@ -1,0 +1,145 @@
+.container { 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #ffff;
+}
+
+.card {
+    background: white;
+    padding: 32px;
+    border-radius: 16px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 673px;
+    height: 530px;
+    position: absolute;
+    /* top: 226px; */
+    left: 630px;
+    max-width: 400px;
+    text-align: center;
+    gap: 32px;
+}
+
+.title {
+    font-size: 30px;
+    color: #333;
+    margin-bottom: 1rem;
+    
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.inputGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    text-align: left; /* Alineación del label a la izquierda */
+}
+
+.inputGroup label {
+    font-size: 1rem;
+    color: #333;
+    font-weight: bold;
+    margin-bottom: 0.3rem; /* Espacio entre el label y el input */
+}
+
+.inputGroup input,
+.inputGroup select {
+    padding: 0.8rem;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-size: 1rem;
+    outline: none;
+    background-color: #f0f0f5;
+    transition: border-color 0.3s ease;
+}
+
+.inputGroup input:focus,
+.inputGroup select:focus {
+    border-color: #512da8;
+}
+
+.icon {
+    color: #ffa500; /* Color naranja para el ícono */
+    font-size: 1.4rem;
+    margin-right: 0.5rem;
+}
+
+.button {
+    background: #035AC5;
+    color: white;
+    border: none;
+    padding: 0.8rem;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.button:hover {
+    background: #341b7a;
+}
+
+.button.disabled {
+    background-color: #C6DFFE; 
+    cursor: not-allowed;
+}
+
+
+.customSelect {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 0.8rem;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  background-color: #f0f0f5;
+  cursor: pointer;
+}
+
+.selectedOption {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+}
+
+.dropdownOption {
+  padding: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.dropdownOption:hover {
+  background-color: #f4f4f9;
+}
+
+.icon {
+  color: #ffa500;
+  font-size: 1.4rem;
+}
+
+
+
+  
+  
+  
