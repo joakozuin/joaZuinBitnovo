@@ -25,7 +25,7 @@ const Service = {
     },
 
     /* Crear una orden */
-    postOrderCreate: async (data) => {
+    /* postOrderCreate: async (data) => {
         try {
             const response = await Axios.post(`${url}orders`,data, {
                 headers: {
@@ -43,7 +43,7 @@ const Service = {
             //return null;
         }
     },
-
+ */
     /* Obtener información de una orden por ID */
     getOrderListRead: async (id: string) => {
         try {

@@ -1,6 +1,6 @@
 'use client'
 import { use } from "react";
-//import OrderSummary from "@/cripto/ui/OrderSummary/OrderSummary";
+import OrderSummary from "@/cripto/ui/OrderSummary/OrderSummary";
 interface PageProps {
   params: Promise<{
     id: string;
@@ -14,10 +14,10 @@ const Page: React.FC<PageProps> = ({ params }) => {
 
   return (
     <div>
-          {/*<OrderSummary
+          <OrderSummary
            
            identifier={unwrappedParams.id}
-              /> */}
+              /> 
     </div>
   );
 };

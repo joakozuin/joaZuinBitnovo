@@ -8,9 +8,23 @@ import { FiCopy } from "react-icons/fi";
 import { MdOutlineVerified } from "react-icons/md";
 import { useStore } from '../../store/useStore';  
 
-const OrderSummary = () => {
+interface Props {
+  identifier: string;
   
-  const { amount, concept, selectedCurrency } = useStore(); 
+}
+const OrderSummary = ({identifier}:Props) => {
+  
+  const { amountG, conceptG, selectedCurrencyG } = useStore(); 
+
+  console.log("Estamos en OrderSumary")
+  console.log("Mostrame la Proos")
+  console.log(identifier)
+
+  console.log("Mostrame la variable globales")
+  console.log("Importe:", amountG);
+  console.log("Concepto:", conceptG);
+  console.log("Moneda seleccionada:", selectedCurrencyG?.name);
+
 
 
 
@@ -21,18 +35,18 @@ const OrderSummary = () => {
         <div className={styles.card}>
           <div className={styles.cardHeader}>
             <span className={styles.cardName}>Importe: </span>
-            <span className={styles.cardValue}>{amount} EUR</span>
+            <span className={styles.cardValue}>{amountG} EUR</span>
           </div>
 
           <div className={styles.cardHeader}>
             <span className={styles.cardName}>Moneda seleccionada:</span>
             <span className={styles.cardValue}>
               <img
-                src={selectedCurrency?.image}
-                alt={selectedCurrency?.name}
+                src={selectedCurrencyG?.image}
+                alt={selectedCurrencyG?.name}
                 style={{ width: 20, height: 20, marginRight: 10 }}
               />
-              {selectedCurrency?.name}
+              {selectedCurrencyG?.name}
             </span>
           </div>
 
@@ -54,7 +68,7 @@ const OrderSummary = () => {
 
           <div className={styles.cardFooter}>
             <span className={styles.cardConcept}>Concepto: </span>
-            <span className={styles.cardValue}>{concept}</span>
+            <span className={styles.cardValue}>{conceptG}</span>
           </div>
         </div>
       </div>

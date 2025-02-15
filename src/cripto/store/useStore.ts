@@ -1,19 +1,19 @@
 import { create } from 'zustand';
 
 interface PaymentStore {
-  amount: string;
-  concept: string;
-  selectedCurrency: { value: string; name: string; image: string } | null;
-  setAmount: (amount: string) => void;
-  setConcept: (concept: string) => void;
-  setSelectedCurrency: (currency: { value: string; name: string; image: string }) => void;
+  amountG: string;
+  conceptG: string;
+  selectedCurrencyG: {  name: string; image: string } | null;
+  setAmountG: (amount: string) => void;
+  setConceptG: (concept: string) => void;
+  setSelectedCurrencyG: (currency: {  name: string; image: string }) => void;
 }
 
 export const useStore = create<PaymentStore>((set) => ({
-  amount: '',
-  concept: '',
-  selectedCurrency: null,
-  setAmount: (amount) => set({ amount }),
-  setConcept: (concept) => set({ concept }),
-  setSelectedCurrency: (currency) => set({ selectedCurrency: currency }),
+  amountG: '',
+  conceptG: '',
+  selectedCurrencyG: null,
+  setAmountG: (amount) => set({ amountG: amount }),
+  setConceptG: (concept) => set({ conceptG: concept }),
+  setSelectedCurrencyG: (currency) => set({ selectedCurrencyG: currency }),
 }));

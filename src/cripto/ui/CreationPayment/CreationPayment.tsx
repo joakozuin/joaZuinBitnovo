@@ -7,7 +7,7 @@ import Select from 'react-select';
 import styles from './CreationPayment.module.css';
 import ServiceCurrency from '../../services/currency/currency';
 //import ServiceOrder from '../../services/orders/orders'
-//import { useStore } from '../../store/useStore';
+import { useStore } from '../../store/useStore';
 
 interface CurrencyOption {
   symbol: string;
@@ -26,14 +26,14 @@ export default function CreatePayment() {
   const [currencies, setCurrencies] = useState<CurrencyOption[]>([]);
   const [currency, setCurrency] = useState<CurrencyOption[]>([]);
   const [selectedCurrency, setSelectedCurrency] = useState<CurrencyOption | null>(null);
-  const [identifier, setIdentifier] = useState<string | null>('');
+  
   
   // Estado global con nombres distintos para evitar conflictos
-  /* const { 
-    setAmount: setGlobalAmount, 
-    setConcept: setGlobalConcept, 
-    setSelectedCurrency: setGlobalSelectedCurrency 
-  } = useStore(); */
+  const { 
+    setAmountG,
+    setConceptG,
+    setSelectedCurrencyG,
+  } = useStore();
 
   // Validar si el formulario está completo
   const isFormComplete = selectedCurrency && amount && Number(amount) > 0 && concept;
@@ -54,20 +54,6 @@ export default function CreatePayment() {
     fetchCurrencies();
   }, []);
 
-  // Sincronizar estados locales con Zustand
-  /* useEffect(() => {
-    setGlobalAmount(amount);
-    setGlobalConcept(concept);
-    if (selectedCurrency) {
-      setGlobalSelectedCurrency(selectedCurrency);
-    }
-  }, [amount, concept, selectedCurrency, setGlobalAmount, setGlobalConcept, setGlobalSelectedCurrency]); */
-
-  // Manejar cambio de moneda seleccionada
- /*  const handleCurrencyChange = (selectedOption: CurrencyOption | null) => {
-    setSelectedCurrency(selectedOption);
-  }; */
-
   const handleCurrencyChange = (selectedOption: CurrencyOption | null) => {
     setSelectedCurrency(selectedOption); 
   };
@@ -77,11 +63,19 @@ export default function CreatePayment() {
     console.log("Importe:", amount);
     console.log("Concepto:", concept);
     console.log("Moneda seleccionada:", selectedCurrency?.name);
-    
-    const dataObject = {
+
+    setAmountG(amount); 
+    setConceptG(concept); 
+    if (selectedCurrency) {
+      setSelectedCurrencyG({
+        name: selectedCurrency.name,
+        image: selectedCurrency.image,
+      }); 
+    }
+/*     const dataObject = {
       amount,
       concept,
-      selectedCurrency}
+      selectedCurrency} */
 
      //Como no tenemos un usuario autenticado, estamos trabajando en un test
      //recortado, no podemos interactuar con el endpoint POST_order,
@@ -90,10 +84,8 @@ export default function CreatePayment() {
      const identifier:string="14d3030c-3b61-4070-b902-342f80e99364"
 
 
-    /*  const response = await ServiceOrder.postOrderCreate( dataObject);
-     setIdentifier(response?.identifier); */
-
-     //router.push('/payment/order1');
+     /* const response = await ServiceOrder.postOrderCreate( dataObject);
+     const identifier:string = response?.identifier */
 
     router.push(`/payment/order/${identifier}`);
     
