@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './OrderSummary.module.css';
 import { LuClock3 } from "react-icons/lu";
 import { CiCircleInfo } from "react-icons/ci";
@@ -13,7 +13,9 @@ interface Props {
   
 }
 const OrderSummary = ({identifier}:Props) => {
-  
+
+  const [status, setStatus] = useState<string>('');
+
   //Aqui emulamos datos con variables globales, ya que no podemos
   // tener un identifier real para acceder a la orden creada
   const { amountG, conceptG, selectedCurrencyG } = useStore(); 
@@ -37,17 +39,55 @@ const date:string=formatDate(dateData)
 //en funcion del identifier pasado por la props
 // desde el ruteo dinamico
 //
+//Se incluye el manejo del 
 useEffect(() => {
     
-/*   const fetchOrderList = async () => {
+ /*  const fetchOrderRead = async () => {
     const data = await ServiceOrder.getOrderListRead(identifier);
 
       console.log("Datos de la orden:", data); 
    
+  }; */
+
+  const handleWebSocket = () => {
+
+      const socket = new WebSocket(`wss://payments.pre-bnvo.com/ws/${identifier}`);
+
+      socket.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+        setStatus(data.status);
+
+       //Suponemos que el socked contiene informacion
+       // del tiempo de expiracion del pago o del estado del pago
+
+        if (data.status === 'EX' || data.status === 'OC') {
+          alert('Payment expired');
+          // Redirigir a pantalla KO
+        } else if (data.status === 'CO' || data.status === 'AC') {
+          alert('Payment completed');
+          // Redirigir a pantalla OK
+        }
+      };
+
+      socket.onerror = (error) => {
+        console.error('WebSocket error', error);
+      };
+
+      return () => {
+        socket.close();
+      };
+    };
+
+  //fetchOrderRead(); 
+
+  const cleanupWebSocket = handleWebSocket();
+
+  return () => {
+    cleanupWebSocket();
   };
 
-  fetchOrderList(); */
-}, []);
+}, [status]);
+
 
 function formatDate(date: Date): string {
   const day = String(date.getDate()).padStart(2, '0');

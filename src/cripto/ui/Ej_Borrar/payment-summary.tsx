@@ -55,6 +55,7 @@ const PaymentSummary: React.FC<{ paymentId: string }> = ({ paymentId }) => {
     };
   }, [paymentId]);
 
+  
   if (!paymentInfo) {
     return <p>Loading payment info...</p>;
   }

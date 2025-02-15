@@ -16,7 +16,9 @@ const CreatePayment: React.FC = () => {
   const [currency, setCurrency] = useState<string>('');
   const [currencies, setCurrencies] = useState<Currency[]>([]);
   const [paymentId, setPaymentId] = useState<string>('');
+
   const [web3, setWeb3] = useState<Web3 | null>(null);
+  
   const [account, setAccount] = useState<string>('');
 
   useEffect(() => {
