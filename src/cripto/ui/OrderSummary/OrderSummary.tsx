@@ -1,23 +1,25 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import styles from './OrderSummary.module.css';
 import { LuClock3 } from "react-icons/lu";
 import { CiCircleInfo } from "react-icons/ci";
 import { FiCopy } from "react-icons/fi";
 import { MdOutlineVerified } from "react-icons/md";
 import { useStore } from '../../store/useStore';  
-
+//import ServiceOrder from '../../services/orders/orders'
 interface Props {
   identifier: string;
   
 }
 const OrderSummary = ({identifier}:Props) => {
   
+  //Aqui emulamos datos con variables globales, ya que no podemos
+  // tener un identifier real para acceder a la orden creada
   const { amountG, conceptG, selectedCurrencyG } = useStore(); 
 
   console.log("Estamos en OrderSumary")
-  console.log("Mostrame la Proos")
+  console.log("Mostrame la Props")
   console.log(identifier)
 
   console.log("Mostrame la variable globales")
@@ -25,9 +27,43 @@ const OrderSummary = ({identifier}:Props) => {
   console.log("Concepto:", conceptG);
   console.log("Moneda seleccionada:", selectedCurrencyG?.name);
 
+//Creamos dos variables para emular, Comercio y fecha
+const sale:string="Locos por el Asado";
+
+const dateData = new Date();
+const date:string=formatDate(dateData)
+
+//Aqui deberiamos obtener los datos de la orden
+//en funcion del identifier pasado por la props
+// desde el ruteo dinamico
+//
+useEffect(() => {
+    
+/*   const fetchOrderList = async () => {
+    const data = await ServiceOrder.getOrderListRead(identifier);
+
+      console.log("Datos de la orden:", data); 
+   
+  };
+
+  fetchOrderList(); */
+}, []);
+
+function formatDate(date: Date): string {
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const year = date.getFullYear();
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+
+  return `${day}/${month}/${year} ${hours}:${minutes}`;
+}
 
 
 
+
+//Armamos la pantalla con los datos emulados
+//con variables globales
   return (
     <div className={styles.orderSummaryContainer}>
       <div className={styles.orderSummaryCard}>
@@ -55,14 +91,14 @@ const OrderSummary = ({identifier}:Props) => {
               <span className={styles.cardName}>Comercio:</span>
               <span className={styles.cardValue}>
                 <MdOutlineVerified style={{ color: "skyblue", marginRight:'2px' }} />
-                 -
+                 {sale}
               </span>
             </div>
 
             <div className={styles.cardHeaderFecha}>
               <span className={styles.cardName}>Fecha:</span>
               
-              <span className={styles.cardValue}> -</span>
+              <span className={styles.cardValue}> {date}</span>
             </div>
           </div>
 

@@ -29,6 +29,8 @@ export default function CreatePayment() {
   
   
   // Estado global con nombres distintos para evitar conflictos
+  // creamos estas variables globales usando zustand, para emular
+  // datos
   const { 
     setAmountG,
     setConceptG,

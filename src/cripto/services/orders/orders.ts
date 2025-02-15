@@ -7,7 +7,7 @@ const Service = {
     /* Obtener la lista de órdenes */
     getOrderList: async () => {
         try {
-            const response = await Axios.get(`${url}orders`, {
+            const response = await Axios.get(`${url}orders/`, {
                 headers: {
                     "X-Device-Id": "53a86252-35cb-4fbe-9fe7-c4bfb72f23cc",
                     "Content-Type": "application/json",
@@ -20,7 +20,7 @@ const Service = {
             return response;
         } catch (error) {
             console.error("Error al obtener la lista de órdenes:", error);
-            return null;
+            //return null;
         }
     },
 
@@ -44,10 +44,10 @@ const Service = {
         }
     },
  */
-    /* Obtener información de una orden por ID */
-    getOrderListRead: async (id: string) => {
+    /* Obtener información de una orden por identifier */
+    getOrderListRead: async (identifier: string) => {
         try {
-            const response = await Axios.get(`${url}orders/info/${id}`, {
+            const response = await Axios.get(`${url}orders/info/${identifier}`, {
                 headers: {
           "X-Device-Id": "53a86252-35cb-4fbe-9fe7-c4bfb72f23cc",
           "Content-Type": "application/json",
@@ -59,8 +59,8 @@ const Service = {
 
             return response;
         } catch (error) {
-            console.error(`Error al obtener la información de la orden con ID ${id}:`, error);
-            return null;
+            console.error(`Error al obtener la información de la orden con identifier ${identifier}:`, error);
+            //return null;
         }
     },
 };
