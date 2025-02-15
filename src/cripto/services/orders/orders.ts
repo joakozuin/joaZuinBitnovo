@@ -25,9 +25,9 @@ const Service = {
     },
 
     /* Crear una orden */
-    postOrderCreate: async () => {
+    postOrderCreate: async (data) => {
         try {
-            const response = await Axios.post(`${url}orders`, {
+            const response = await Axios.post(`${url}orders`,data, {
                 headers: {
                     "X-Device-Id": "53a86252-35cb-4fbe-9fe7-c4bfb72f23cc",
                     "Content-Type": "application/json",

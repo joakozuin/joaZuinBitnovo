@@ -1,12 +1,13 @@
+import Welcome from "@/cripto/ui/Welcome/welcome";
 
-import CreatePayment from "@/cripto/ui/CreationPayment/CreationPayment";
+
 
 
 export default function Home() {
   return (
    <div>
-        <CreatePayment/>
-
+        <h1>Home</h1>
+        <Welcome/>
    </div>
   );
 }
