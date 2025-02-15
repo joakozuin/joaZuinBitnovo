@@ -9,6 +9,7 @@ import { MdOutlineVerified } from "react-icons/md";
 import { useStore } from '../../store/useStore';  
 
 const OrderSummary = () => {
+  
   const { amount, concept, selectedCurrency } = useStore(); 
 
 

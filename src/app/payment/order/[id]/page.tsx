@@ -1,24 +1,22 @@
 'use client'
-
-
+import { use } from "react";
 //import OrderSummary from "@/cripto/ui/OrderSummary/OrderSummary";
 interface PageProps {
-  params: {
-    id: string[];
-  };
+  params: Promise<{
+    id: string;
+  }>;
 }
 
-const Page: React.FC<PageProps> = ({ /* params */ }) => {
+const Page: React.FC<PageProps> = ({ params }) => {
+  const unwrappedParams = use(params);
 
-  //const IdP = params.id[0];
-  
-
+  console.log("Ruteando a OrderSummary id:", unwrappedParams.id);
 
   return (
     <div>
-{/*       <OrderSummary
-           idP={IdP}
+          {/*<OrderSummary
            
+           identifier={unwrappedParams.id}
               /> */}
     </div>
   );

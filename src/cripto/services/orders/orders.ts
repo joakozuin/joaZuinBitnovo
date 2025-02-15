@@ -40,7 +40,7 @@ const Service = {
             return response;
         } catch (error) {
             console.error("Error al crear la orden:", error);
-            return null;
+            //return null;
         }
     },
 

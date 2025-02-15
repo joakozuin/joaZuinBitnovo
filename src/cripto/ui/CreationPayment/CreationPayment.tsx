@@ -6,7 +6,7 @@ import { CiCircleInfo } from "react-icons/ci";
 import Select from 'react-select';
 import styles from './CreationPayment.module.css';
 import ServiceCurrency from '../../services/currency/currency';
-import ServiceOrder from '../../services/orders/orders'
+//import ServiceOrder from '../../services/orders/orders'
 //import { useStore } from '../../store/useStore';
 
 interface CurrencyOption {
@@ -25,8 +25,8 @@ export default function CreatePayment() {
   const [concept, setConcept] = useState('');
   const [currencies, setCurrencies] = useState<CurrencyOption[]>([]);
   const [currency, setCurrency] = useState<CurrencyOption[]>([]);
-  const [selectedCurrency, setSelectedCurrency] = useState<string | null>(null);
-  const [paymentId, setPaymentId] = useState<string | null>('');
+  const [selectedCurrency, setSelectedCurrency] = useState<CurrencyOption | null>(null);
+  const [identifier, setIdentifier] = useState<string | null>('');
   
   // Estado global con nombres distintos para evitar conflictos
   /* const { 
@@ -40,17 +40,15 @@ export default function CreatePayment() {
 
   // Obtener lista de monedas desde el servicio
   useEffect(() => {
+    
     const fetchCurrencies = async () => {
-      try {
-        const data: CurrencyOption[] = await ServiceCurrency.getListCurrency();
+      const data: CurrencyOption[] = await ServiceCurrency.getListCurrency();
 
         console.log("Lista de monedas disponibles:", data);
 
           setCurrencies(data);
           setCurrency(data);
-      } catch (error) {
-        console.error("Error al obtener las monedas:", error);
-      }
+     
     };
 
     fetchCurrencies();
@@ -70,32 +68,35 @@ export default function CreatePayment() {
     setSelectedCurrency(selectedOption);
   }; */
 
-  const handleCurrencyChange = (e:CurrencyOption) => {
-    setSelectedCurrency(e.name);
+  const handleCurrencyChange = (selectedOption: CurrencyOption | null) => {
+    setSelectedCurrency(selectedOption); 
   };
 
   const handleCreateOrder = async() => {
     console.log("Información del formulario:");
     console.log("Importe:", amount);
     console.log("Concepto:", concept);
-    console.log("Moneda seleccionada:", selectedCurrency);
+    console.log("Moneda seleccionada:", selectedCurrency?.name);
+    
+    const dataObject = {
+      amount,
+      concept,
+      selectedCurrency}
 
-     try {
-      const dataObject = {
-        amount,
-        concept,
-        selectedCurrency}
+     //Como no tenemos un usuario autenticado, estamos trabajando en un test
+     //recortado, no podemos interactuar con el endpoint POST_order,
+     // entonces  utilizamos un
 
-       const response = await ServiceOrder.postOrderCreate( dataObject);
-
-       setPaymentId(response?.data);
-
-     } catch (error) {
-       console.error('Error creating payment', error);
-     }
+     const identifier:string="14d3030c-3b61-4070-b902-342f80e99364"
 
 
-    router.push('/payment/order1');
+    /*  const response = await ServiceOrder.postOrderCreate( dataObject);
+     setIdentifier(response?.identifier); */
+
+     //router.push('/payment/order1');
+
+    router.push(`/payment/order/${identifier}`);
+    
   };
 
   const isAmountValid = (amount: number,currency: CurrencyOption) => {
@@ -136,12 +137,12 @@ export default function CreatePayment() {
             <label className={styles.label}>
               Seleccionar moneda <CiCircleInfo />
             </label>
-            <Select
-                value={currencies}
-                onChange={(e)=>handleCurrencyChange(e as CurrencyOption)}
+            <Select               
+                value={selectedCurrency} 
+                onChange={handleCurrencyChange}
                 options={currency}
-                getOptionLabel={(e) => e.name} // Asegurar que devuelve un string
-                formatOptionLabel={(e) => ( // Formatear la opción con JSX
+                getOptionLabel={(e) => e.name} 
+                formatOptionLabel={(e) => ( 
                   <div style={{ display: 'flex', alignItems: 'center' }}>
                     <img src={e.image} alt={e.name} style={{ width: 20, height: 20, marginRight: 10 }} />
                     {e.name}
