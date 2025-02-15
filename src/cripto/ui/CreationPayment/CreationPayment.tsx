@@ -93,6 +93,8 @@ export default function CreatePayment() {
     
   };
 
+ 
+
   const isAmountValid = (amount: number,currency: CurrencyOption) => {
     return amount >=currency.min_amount && amount <= currency.max_amount;
   }
@@ -163,8 +165,10 @@ export default function CreatePayment() {
             disabled={!isFormComplete}
             onClick={handleCreateOrder}
           >
-            Continuar
+            Continuar 
           </button>
+
+
         </form>
       </div>
     </div>

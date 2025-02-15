@@ -1,20 +1,24 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { QRCodeCanvas } from 'qrcode.react';
 import styles from './OrderSummary.module.css';
 import { LuClock3 } from "react-icons/lu";
 import { CiCircleInfo } from "react-icons/ci";
 import { FiCopy } from "react-icons/fi";
 import { MdOutlineVerified } from "react-icons/md";
 import { useStore } from '../../store/useStore';  
+
 //import ServiceOrder from '../../services/orders/orders'
 interface Props {
   identifier: string;
   
 }
 const OrderSummary = ({identifier}:Props) => {
-
+const router = useRouter();
   const [status, setStatus] = useState<string>('');
+  const [qr, setQr]= useState<boolean>(true);
 
   //Aqui emulamos datos con variables globales, ya que no podemos
   // tener un identifier real para acceder a la orden creada
@@ -63,9 +67,17 @@ useEffect(() => {
         if (data.status === 'EX' || data.status === 'OC') {
           alert('Payment expired');
           // Redirigir a pantalla KO
+
+          router.push('/payment/message/failuremessage');
+          
+
         } else if (data.status === 'CO' || data.status === 'AC') {
           alert('Payment completed');
           // Redirigir a pantalla OK
+
+          router.push('/payment/message/successmessage');
+          
+
         }
       };
 
@@ -89,6 +101,7 @@ useEffect(() => {
 }, [status]);
 
 
+
 function formatDate(date: Date): string {
   const day = String(date.getDate()).padStart(2, '0');
   const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -99,7 +112,7 @@ function formatDate(date: Date): string {
   return `${day}/${month}/${year} ${hours}:${minutes}`;
 }
 
-
+const qrData = `{"amount": ${amountG}, "currency": "${selectedCurrencyG?.name}", "address": "Xp4Lw2PtQgB7RmedTak143LrXp4Lw2PtQgB7RmedEV731CdTak143LrXp4L", "destinationTag": "2557164061"}`;
 
 
 //Armamos la pantalla con los datos emulados
@@ -130,14 +143,16 @@ function formatDate(date: Date): string {
             <div className={styles.cardHeaderColumnRow}>
               <span className={styles.cardName}>Comercio:</span>
               <span className={styles.cardValue}>
-                <MdOutlineVerified style={{ color: "skyblue", marginRight:'2px' }} />
-                 {sale}
+                <MdOutlineVerified
+                  style={{ color: "skyblue", marginRight: "2px" }}
+                />
+                {sale}
               </span>
             </div>
 
             <div className={styles.cardHeaderFecha}>
               <span className={styles.cardName}>Fecha:</span>
-              
+
               <span className={styles.cardValue}> {date}</span>
             </div>
           </div>
@@ -159,18 +174,36 @@ function formatDate(date: Date): string {
             </p>
           </div>
           <div className={styles.paymentButtons}>
-            <button className={styles.smartQRButton}>SmartQR</button>
-            <button className={styles.web3Button}>Web3</button>
+            <button
+              className={styles.smartQRButton}
+              onClick={() => setQr(true)}
+            >
+              SmartQR
+            </button>
+
+            <button className={styles.web3Button} onClick={() => setQr(false)}>
+              Web3
+            </button>
           </div>
 
           <div className={styles.centeredContent}>
             <div className={styles.QR}>
-              qr
+              {qr ? (
+                <QRCodeCanvas value={qrData} />
+              ) : (
+                <>
+                  <img
+                    src="/metamask.png"
+                    alt={selectedCurrencyG?.name}
+                    style={{ width: 140, height: 140}}
+                  />
+                </>
+              )}
             </div>
 
             <div className={styles.infoSection}>
               <p className={styles.infoText}>
-                Enviar: <FiCopy />
+                Enviar: {amountG} {selectedCurrencyG?.name} <FiCopy />
               </p>
 
               {/* el campo de la respuesta */}
@@ -180,7 +213,7 @@ function formatDate(date: Date): string {
               </p>
 
               <p className={styles.infoText}>
-                <CiCircleInfo className={styles.CiCircleInfo} /> Etiqueta de
+                <CiCircleInfo style={{ color: "yellow" }} /> Etiqueta de
                 destinos: <FiCopy />
               </p>
             </div>

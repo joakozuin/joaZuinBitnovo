@@ -1,9 +1,11 @@
+'use client';
+
 import React from "react";
 import { FaCheckCircle } from "react-icons/fa";
 import styles from "./PaymentMessage.module.css";
 import { useRouter } from 'next/navigation';
 
-const SuccessMessage: React.FC = () => {
+const SuccessMessage = () => {
   const router = useRouter();
 
   const handleBack = () => {

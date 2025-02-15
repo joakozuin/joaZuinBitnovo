@@ -1,9 +1,10 @@
+'use client';
 import React from "react";
 import { FaTimesCircle } from "react-icons/fa";
 import styles from "./PaymentMessage.module.css";
 import { useRouter } from 'next/navigation';
 
-const FailureMessage: React.FC = () => {
+const FailureMessage = () => {
   const router = useRouter();
 
   const handleBack = () => {

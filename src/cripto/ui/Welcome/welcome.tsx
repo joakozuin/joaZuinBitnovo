@@ -1,6 +1,7 @@
 'use client';
 import React from 'react'
 import { useRouter } from 'next/navigation';
+import styles from './welcome.module.css';
 const Welcome = () => {
     const router = useRouter();
 
@@ -10,8 +11,10 @@ const Welcome = () => {
         router.push('/payment');
       };
   return (
-    <div>
-      <button onClick={handleBack} > Quiere realizar un nuevo pago</button>
+    <div className={styles.container}>
+      <button onClick={handleBack} className={styles.button}>
+        Realizar un nuevo Pago
+      </button>
     </div>
   )
 }
