@@ -1,36 +1,63 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## Prueba técnica Bitnovo
 
-## Getting Started
 
-First, run the development server:
+## Joaquin Sebastian Zuin
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+------------
+![image](./public/bitnovo.webp)
+## Proyecto Prueba técnica Bitnovo
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+El desarrollo consiste en crear una pasarela de pago con criptodivisas. Esta se va a realizar en un entorno de testnet.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+# Descripción del proyecto 
+ El desarrollo principal consiste en una pantalla para crear el pago y otra para realizar el
+pago.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+La información sobre cada pantalla la tenemos a continuación:
+- 1- Crear pago y selección de moneda.
 
-## Learn More
+El Merchant deberá poder crear un pago añadiendo el importe, concepto y criptodivisa.
+Para crear el pago se hará uso del endpoint POST orders y para listar las criptodivisas
+disponibles se hará con el endpoint GET currencies.
+Los 3 campos mencionados anteriormente deberán introducirse en una misma pantalla y las
+criptodivisas que se podrán seleccionar para crear el pago variarán en función del importe
+del pago. Hay que controlar el importe máximo y mínimo de cada moneda.
 
-To learn more about Next.js, take a look at the following resources:
+- 2- Pasarela de pago QR.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Una vez el pago esté creado debemos mostrar todos los datos del resumen del pago y la
+información para que el Cliente pueda realizarlo. Todos estos datos los podemos obtener
+haciendo uso del endpoint GET orders/info.
+Importante: la pasarela de pago debe refrescarse en tiempo real, es decir, si se recibe un
+pago la pantalla se debe refrescar de forma automática. Al crear un pago, se crea un
+websocket el cual se puede escuchar para recibir notificaciones de cambio de estado.
+Ejemplo de websocket:
+const socket = new WebSocket('wss://payments.pre-bnvo.com/ws/<identifier>');
+Simplemente habría que añadir en cada caso el identifier que devuelve el endpoint al crear
+un pago.
+Hay que tener en cuenta que los pagos tienen un tiempo de expiración y que debe llevarnos
+a una pantalla KO si caduca (estado “EX” o “OC”). En cambio, si el pago se realiza
+correctamente (estado “CO” o “AC”), nos llevará a una pantalla OK.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# Uso de la app
 
-## Deploy on Vercel
+- El sistema cuando se inicia 
+![image](./public/pantalla_00.PNG)
+- Pantalla crear pago
+![image](./public/pantalla_01.PNG)
+- Pantalla de resumen y realizar pago.
+![image](./public/pantalla_02.PNG)
+![image](./public/pantalla_03.PNG)
+- Pantalla pago exitoso.
+![image](./public/pantalla_05.PNG)
+- Pantalla pago caducado.
+![image](./public/pantalla_04.PNG)
+# Deploy
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Puede ejecutar el proyecto desde el siguiente link:
+[https://people-start-wars.vercel.app/](https://people-start-wars.vercel.app/)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+#
+
+
+
