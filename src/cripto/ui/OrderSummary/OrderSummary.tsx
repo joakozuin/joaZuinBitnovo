@@ -16,6 +16,8 @@ interface Props {
   identifier: string;
   
 }
+
+
 const OrderSummary = ({identifier}:Props) => {
 
   const router = useRouter();
@@ -98,29 +100,26 @@ useEffect(() => {
 
    //fetchOrderRead(); 
 
-  const cleanupWebSocket = handleWebSocket();
-
-  return () => {
-    cleanupWebSocket();
-  };
+  handleWebSocket();
 
 }, [status]);
 
 useEffect(() =>{
   const handleMetamask = async() => {
-  if ((window as any).ethereum) {
-    const web3Instance = new Web3((window as any).ethereum);
-    try {
-      await (window as any).ethereum.enable();
-      const accounts = await web3Instance.eth.getAccounts();
-      setWeb3(web3Instance);
-      setAccount(accounts[0]);
-    } catch (error) {
-      console.error('Error en la coexión a Metamask', error);
+
+    if (window.ethereum) {
+      const web3Instance = new Web3(window.ethereum);
+      try {
+        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+        setWeb3(web3Instance);
+        setAccount(accounts[0]);
+      } catch (error) {
+        console.error('Error en la conexión a Metamask', error);
+      }
+    } else {
+      alert('Instale Metamask para esta funcionalidad');
     }
-  } else {
-    alert('Instale Metamask para esta funcionalidad');
-  }
+
   }
 
   //Conexión a Metamask

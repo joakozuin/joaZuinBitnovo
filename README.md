@@ -55,7 +55,7 @@ correctamente (estado “CO” o “AC”), nos llevará a una pantalla OK.
 # Deploy
 
 Puede ejecutar el proyecto desde el siguiente link:
-[https://people-start-wars.vercel.app/](https://people-start-wars.vercel.app/)
+[https://joa-zuin-bitnovo.vercel.app/](https://joa-zuin-bitnovo.vercel.app/)
 
 #
 
