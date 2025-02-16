@@ -19,6 +19,7 @@ const OrderSummary = ({identifier}:Props) => {
 const router = useRouter();
   const [status, setStatus] = useState<string>('');
   const [qr, setQr]= useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
 
   //Aqui emulamos datos con variables globales, ya que no podemos
   // tener un identifier real para acceder a la orden creada
@@ -34,7 +35,7 @@ const router = useRouter();
   console.log("Moneda seleccionada:", selectedCurrencyG?.name);
 
 //Creamos dos variables para emular, Comercio y fecha
-const sale:string="Locos por el Asado";
+const sale:string="Travel Rock Mendoza";
 
 const dateData = new Date();
 const date:string=formatDate(dateData)
@@ -114,7 +115,40 @@ function formatDate(date: Date): string {
 
 const qrData = `{"amount": ${amountG}, "currency": "${selectedCurrencyG?.name}", "address": "Xp4Lw2PtQgB7RmedTak143LrXp4Lw2PtQgB7RmedEV731CdTak143LrXp4L", "destinationTag": "2557164061"}`;
 
+const handleSmartQR = async() => {
 
+  setLoading(true);
+  setQr(true)
+
+  try {
+    const response = await fetch("/api/payment", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ amount: Number(amountG)}), // Monto de prueba
+    });
+
+    const data = await response.json();
+
+    if (data.checkoutLink) {
+
+      window.location.href = data.checkoutLink; // Redirige al pago BTC en testnet
+
+    } else {
+      alert("Error al procesar el pago");
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    alert("Error al procesar el pago");
+  } finally {
+    setLoading(false);
+  }
+  
+
+}
+const handleWeb3 = () => {
+  setQr(false)
+
+}
 //Armamos la pantalla con los datos emulados
 //con variables globales
   return (
@@ -176,12 +210,13 @@ const qrData = `{"amount": ${amountG}, "currency": "${selectedCurrencyG?.name}",
           <div className={styles.paymentButtons}>
             <button
               className={styles.smartQRButton}
-              onClick={() => setQr(true)}
+              onClick={() => handleSmartQR()}
             >
-              SmartQR
+              {loading ? "Procesando..." : "SmartQR"}
             </button>
 
-            <button className={styles.web3Button} onClick={() => setQr(false)}>
+            <button className={styles.web3Button}
+             onClick={() => handleWeb3()}>
               Web3
             </button>
           </div>
@@ -214,7 +249,7 @@ const qrData = `{"amount": ${amountG}, "currency": "${selectedCurrencyG?.name}",
 
               <p className={styles.infoText}>
                 <CiCircleInfo style={{ color: "yellow" }} /> Etiqueta de
-                destinos: <FiCopy />
+                destino:2557164061 <FiCopy />
               </p>
             </div>
           </div>
