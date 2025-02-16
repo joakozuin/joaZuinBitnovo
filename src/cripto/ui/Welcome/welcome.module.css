@@ -2,8 +2,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 85vh;  
+    height: 100vh;  
     background: #f7f6f6a8;  
+    font-family: 'Arial', sans-serif; 
   }
   
   /* Estilos del botón */

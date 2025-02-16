@@ -5,14 +5,12 @@ import styles from './welcome.module.css';
 const Welcome = () => {
     const router = useRouter();
 
-    const handleBack = () => {
-
-    
+    const handleBotton = () => {
         router.push('/payment');
       };
   return (
     <div className={styles.container}>
-      <button onClick={handleBack} className={styles.button}>
+      <button onClick={handleBotton} className={styles.button}>
         Realizar un nuevo Pago
       </button>
     </div>

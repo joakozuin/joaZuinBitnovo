@@ -9,6 +9,7 @@ import { CiCircleInfo } from "react-icons/ci";
 import { FiCopy } from "react-icons/fi";
 import { MdOutlineVerified } from "react-icons/md";
 import { useStore } from '../../store/useStore';  
+import Web3 from 'web3';
 
 //import ServiceOrder from '../../services/orders/orders'
 interface Props {
@@ -16,10 +17,15 @@ interface Props {
   
 }
 const OrderSummary = ({identifier}:Props) => {
-const router = useRouter();
+
+  const router = useRouter();
+
   const [status, setStatus] = useState<string>('');
   const [qr, setQr]= useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(false);
+  const [web3, setWeb3] = useState<Web3 | null>(null);
+  const [account, setAccount] = useState<string>('');
+
 
   //Aqui emulamos datos con variables globales, ya que no podemos
   // tener un identifier real para acceder a la orden creada
@@ -44,7 +50,7 @@ const date:string=formatDate(dateData)
 //en funcion del identifier pasado por la props
 // desde el ruteo dinamico
 //
-//Se incluye el manejo del 
+//
 useEffect(() => {
     
  /*  const fetchOrderRead = async () => {
@@ -62,22 +68,17 @@ useEffect(() => {
         const data = JSON.parse(event.data);
         setStatus(data.status);
 
-       //Suponemos que el socked contiene informacion
+       //Suponemos que el socket contiene informacion
        // del tiempo de expiracion del pago o del estado del pago
+       //no conocemos la funcionalidades el socket
 
         if (data.status === 'EX' || data.status === 'OC') {
-          alert('Payment expired');
-          // Redirigir a pantalla KO
-
+          
           router.push('/payment/message/failuremessage');
           
-
         } else if (data.status === 'CO' || data.status === 'AC') {
-          alert('Payment completed');
-          // Redirigir a pantalla OK
-
+        
           router.push('/payment/message/successmessage');
-          
 
         }
       };
@@ -91,7 +92,11 @@ useEffect(() => {
       };
     };
 
-  //fetchOrderRead(); 
+   //Aca deberiamos leer los datos de la orden de pago con el identifier
+   //pero no funciona los endpoint, entonces emulamos datos
+   //***** */
+
+   //fetchOrderRead(); 
 
   const cleanupWebSocket = handleWebSocket();
 
@@ -101,6 +106,27 @@ useEffect(() => {
 
 }, [status]);
 
+useEffect(() =>{
+  const handleMetamask = async() => {
+  if ((window as any).ethereum) {
+    const web3Instance = new Web3((window as any).ethereum);
+    try {
+      await (window as any).ethereum.enable();
+      const accounts = await web3Instance.eth.getAccounts();
+      setWeb3(web3Instance);
+      setAccount(accounts[0]);
+    } catch (error) {
+      console.error('Error en la coexión a Metamask', error);
+    }
+  } else {
+    alert('Instale Metamask para esta funcionalidad');
+  }
+  }
+
+  //Conexión a Metamask
+  //
+  handleMetamask()
+},[])
 
 
 function formatDate(date: Date): string {
@@ -115,6 +141,10 @@ function formatDate(date: Date): string {
 
 const qrData = `{"amount": ${amountG}, "currency": "${selectedCurrencyG?.name}", "address": "Xp4Lw2PtQgB7RmedTak143LrXp4Lw2PtQgB7RmedEV731CdTak143LrXp4L", "destinationTag": "2557164061"}`;
 
+//Cuando apretamos el boton SmartQR
+//generamos el pago utilizando la aplicacion
+//de test de BTC, el codigo QR es generado
+//con qrData
 const handleSmartQR = async() => {
 
   setLoading(true);
@@ -124,31 +154,59 @@ const handleSmartQR = async() => {
     const response = await fetch("/api/payment", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ amount: Number(amountG)}), // Monto de prueba
+      body: JSON.stringify({ amount: Number(amountG)}), 
     });
 
     const data = await response.json();
 
     if (data.checkoutLink) {
 
-      window.location.href = data.checkoutLink; // Redirige al pago BTC en testnet
+      window.location.href = data.checkoutLink;
+
+      router.push('/payment/message/successmessage');
 
     } else {
-      alert("Error al procesar el pago");
+
+      router.push('/payment/message/failuremessage');
+
     }
   } catch (error) {
     console.error("Error:", error);
-    alert("Error al procesar el pago");
+
+     router.push('/payment/message/failuremessage');
+
   } finally {
     setLoading(false);
   }
   
 
 }
-const handleWeb3 = () => {
-  setQr(false)
+
+//Generando el pago usando wallet Metamask
+//
+const handleWeb3 = async() => {
+ setQr(false)
+
+ if (web3 && account) {
+      try {
+        await web3.eth.sendTransaction({
+          from: account,
+          to: 'peperodriguez@gmail.com', // Va la dirección del destinatario
+          value: web3.utils.toWei(amountG, 'ether')
+        });
+      
+        router.push('/payment/message/successmessage');
+
+      } catch (err) {
+        console.error(err);
+      
+        router.push('/payment/message/failuremessage');
+      }
+    }
 
 }
+
+
 //Armamos la pantalla con los datos emulados
 //con variables globales
   return (
@@ -219,6 +277,7 @@ const handleWeb3 = () => {
              onClick={() => handleWeb3()}>
               Web3
             </button>
+            {account && <p>Conectado a la cuenta: {account}</p>}
           </div>
 
           <div className={styles.centeredContent}>
