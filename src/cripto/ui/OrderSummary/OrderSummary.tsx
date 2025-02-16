@@ -104,7 +104,8 @@ useEffect(() => {
 
 }, [status]);
 
-useEffect(() =>{
+
+ /* useEffect(() =>{
   const handleMetamask = async() => {
 
     if (window.ethereum) {
@@ -125,7 +126,7 @@ useEffect(() =>{
   //Conexión a Metamask
   //
   handleMetamask()
-},[])
+},[])  */
 
 
 function formatDate(date: Date): string {
