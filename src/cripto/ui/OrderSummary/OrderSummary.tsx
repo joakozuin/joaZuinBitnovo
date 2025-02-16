@@ -105,8 +105,9 @@ useEffect(() => {
 }, [status]);
 
 
- /* useEffect(() =>{
-  const handleMetamask = async() => {
+ useEffect(() =>{
+
+  /* const handleMetamask = async() => {
 
     if (window.ethereum) {
       const web3Instance = new Web3(window.ethereum);
@@ -125,8 +126,11 @@ useEffect(() => {
 
   //Conexión a Metamask
   //
-  handleMetamask()
-},[])  */
+  handleMetamask() */
+  setWeb3(null);
+  setAccount("");
+
+},[]) 
 
 
 function formatDate(date: Date): string {
